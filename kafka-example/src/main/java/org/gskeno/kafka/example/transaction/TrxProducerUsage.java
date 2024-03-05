@@ -34,7 +34,6 @@ public class TrxProducerUsage {
                 Thread.sleep(3000);
                 producer.commitTransaction();
                 System.out.println("commitMessage " + loop + "," + new Date());
-
             }
 
         } catch (ProducerFencedException | OutOfOrderSequenceException | AuthorizationException e) {
