@@ -1,3 +1,10 @@
+# 事务消息
+如果producer1在事务消息commit前send了两条消息A和C，producer2在A，C发送时间之内之间send消息B。简单来说就是普通消息B卡在了事务消息A，C之间，
+那么producer1在commit之前，消费者能消费消息B吗
+
+**消费不了，得commit后，消费者能顺序收到A，B，C消息** 
+
+---
 
 # 异常
 

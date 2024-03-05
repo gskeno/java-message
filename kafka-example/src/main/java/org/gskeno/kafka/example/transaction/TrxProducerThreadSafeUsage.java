@@ -19,21 +19,18 @@ import java.util.concurrent.Future;
  * https://kafka.apache.org/37/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
  * 发送事务消息
  */
-public class TrxProducerMultiThreadUsage {
+public class TrxProducerThreadSafeUsage {
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
         props.put("transactional.id", "my-transactional-id");
-
-        Properties props2 = new Properties();
-        props2.put("bootstrap.servers", "localhost:9092");
-        Producer<String, String> producer2 = new KafkaProducer<>(props2, new StringSerializer(), new StringSerializer());
+        Producer<String, String> producer = new KafkaProducer<>(props, new StringSerializer(), new StringSerializer());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(5000);
-                    Future<RecordMetadata> send = producer2.send(new ProducerRecord<>("trx1", "y", "y"));
+                    Future<RecordMetadata> send = producer.send(new ProducerRecord<>("trx1", "y", "y"));
                     RecordMetadata recordMetadata = send.get();
                     System.out.println("sendMessage y " + new Date() + "," + recordMetadata.offset());
                 } catch (InterruptedException e) {
@@ -41,11 +38,12 @@ public class TrxProducerMultiThreadUsage {
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-                producer2.close();
             }
         }).start();
-        Producer<String, String> producer = new KafkaProducer<>(props, new StringSerializer(), new StringSerializer());
+        // producer是线程安全的，这里表面上看，事务内只有x,z两个消息，实际上有x,y,z三个消息，它们都在
+        // 事务时间内产生
         producer.initTransactions();
+
         try {
             producer.beginTransaction();
             System.out.println("beginTransaction " + new Date());
