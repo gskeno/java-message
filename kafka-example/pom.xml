@@ -22,6 +22,22 @@
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
         </dependency>
+
+        <!-- logback-classic内部会包含slf4j-api包，
+                如果dependencyManagement中定义了一个高版本slf4j-api包，
+                则子模块在引入logback-classic时，子模块中的slf4j-api
+                可能为高版本-->
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.3.14</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-simple</artifactId>-->
+<!--            <version>1.7.25</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>

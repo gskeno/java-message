@@ -38,3 +38,6 @@ Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.erro
 	at org.apache.kafka.clients.producer.internals.FutureRecordMetadata.get(FutureRecordMetadata.java:30)
 	at org.gskeno.kafka.example.transaction.TrxProducer2.main(TrxProducer2.java:35)
 ```
+
+# 设计
+org.apache.kafka.common.network.Selector.connect
