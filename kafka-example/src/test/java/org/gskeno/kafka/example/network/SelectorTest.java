@@ -28,8 +28,8 @@ public class SelectorTest {
         socket.setTcpNoDelay(true);
 
         InetSocketAddress address =
-                // new InetSocketAddress("127.0.0.1", 8082);
-        new InetSocketAddress("baidu.com", 80);
+                new InetSocketAddress("127.0.0.1", 8082);
+        // new InetSocketAddress("baidu.com", 80);
         // 如果连接建立很快，返回true；否则返回false，后续通过finishConnect查看连接是否已经完成建立
         boolean connect = socketChannel.connect(address);
         System.out.println("connect:" + connect);
@@ -52,7 +52,7 @@ public class SelectorTest {
                 // selectionKey的可连接，并不代表tcp的握手连接成功
                 if (k.isConnectable()){
                     SocketChannel channelA = (SocketChannel)k.channel();
-                    // 这里连接成功，才算成功
+                    // 这里连接成功，才算成功;如果无法连接这里会发生异常
                     boolean b = channelA.finishConnect();
                     System.out.println("finishConnect:" + b);
                 }
